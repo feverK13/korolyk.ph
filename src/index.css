@@ -1,0 +1,261 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  --color-ink: #0b0b0b;
+  --color-paper: #f2f2f0;
+  --color-mute-paper: #575757;
+  --color-mute-ink: #a6a6a6;
+
+  --font-display: "Inter Variable", "Inter", system-ui, sans-serif;
+  --font-wide: "Unbounded Variable", "Unbounded", "Arial Black", sans-serif;
+  --font-sans: "Montserrat Variable", "Montserrat", system-ui, sans-serif;
+
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+
+  --animate-accordion-down: accordion-down 0.45s var(--ease-out-soft);
+  --animate-accordion-up: accordion-up 0.35s var(--ease-out-soft);
+
+  @keyframes accordion-down {
+    from { height: 0; opacity: 0; }
+    to { height: var(--radix-accordion-content-height); opacity: 1; }
+  }
+  @keyframes accordion-up {
+    from { height: var(--radix-accordion-content-height); opacity: 1; }
+    to { height: 0; opacity: 0; }
+  }
+}
+
+/* shadcn semantic tokens mapped to the b/w palette */
+:root {
+  --background: var(--color-paper);
+  --foreground: var(--color-ink);
+  --popover: var(--color-ink);
+  --popover-foreground: var(--color-paper);
+  --primary: var(--color-ink);
+  --primary-foreground: var(--color-paper);
+  --border: color-mix(in oklab, currentColor 22%, transparent);
+  --ring: currentColor;
+  --radius: 0px;
+  --card-r: 22px;
+  --gutter: 20px;
+  /* vertical rhythm: one set of steps for every section */
+  --sec-top: 56px;     /* card edge → section heading */
+  --sec-bottom: 80px;  /* last block → card edge */
+  --head-gap: 40px;    /* heading → first content block */
+}
+@media (min-width: 768px) {
+  :root { --card-r: 28px; --gutter: 32px; --sec-top: 80px; --sec-bottom: 112px; --head-gap: 64px; }
+}
+@media (min-width: 1200px) {
+  :root { --gutter: 48px; --sec-top: 96px; --sec-bottom: 128px; --head-gap: 80px; }
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    background: var(--color-ink);
+    scroll-padding-top: 72px;
+  }
+  body {
+    margin: 0;
+    font-family: var(--font-sans);
+    color: var(--color-ink);
+    background: var(--color-ink);
+    font-size: 0.875rem;
+    line-height: 1.6;
+  }
+  @media (min-width: 768px) {
+    body { font-size: 1rem; }
+  }
+  ::selection { background: var(--color-ink); color: var(--color-paper); }
+  .on-ink ::selection { background: var(--color-paper); color: var(--color-ink); }
+
+  :focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 3px;
+  }
+  h1, h2, h3, p { margin: 0; text-wrap: pretty; }
+  h1, h2, h3 { text-wrap: balance; }
+  img { display: block; max-width: 100%; }
+  button { cursor: pointer; }
+  a, button, summary { touch-action: manipulation; }
+  button { user-select: none; -webkit-user-select: none; }
+}
+
+@layer components {
+  /* ── type ─────────────────────────────── */
+  .t-display {
+    font-family: var(--font-display);
+    font-weight: 300;
+    letter-spacing: -0.055em;
+    line-height: 0.8;
+  }
+  .t-light {
+    font-family: var(--font-display);
+    font-weight: 300;
+    font-size: clamp(3.25rem, 15vw, 9.5rem);
+    letter-spacing: -0.05em;
+    line-height: 0.88;
+  }
+  .t-h2 {
+    font-family: var(--font-wide);
+    font-weight: 800;
+    font-size: clamp(1.6rem, 7.2vw, 4.25rem);
+    letter-spacing: -0.03em;
+    line-height: 1;
+    text-transform: lowercase;
+  }
+  .t-num {
+    font-family: var(--font-wide);
+    font-weight: 800;
+    font-size: clamp(1.9rem, 8vw, 4rem);
+    letter-spacing: -0.04em;
+    line-height: 1;
+  }
+  .t-meta { font-size: 0.75rem; line-height: 1.4; font-weight: 500; letter-spacing: 0.01em; }
+  .t-cap { font-size: 0.6875rem; line-height: 1.4; font-weight: 500; letter-spacing: 0.01em; }
+  .t-italic { font-family: var(--font-display); font-style: italic; font-weight: 300; }
+
+  .mute { color: var(--color-mute-paper); }
+  .on-ink .mute { color: var(--color-mute-ink); }
+
+  .hairline { border-top: 1px solid color-mix(in oklab, currentColor 28%, transparent); }
+
+  .wrap {
+    padding-left: max(var(--gutter), env(safe-area-inset-left, 0px));
+    padding-right: max(var(--gutter), env(safe-area-inset-right, 0px));
+    max-width: 1600px;
+    margin-inline: auto;
+  }
+  .sec { padding-block: var(--sec-top) var(--sec-bottom); }
+  .head-gap { margin-block-start: var(--head-gap); }
+  /* light headings carry an absolutely placed "(suffix)" ~1.6em of the suffix size below the baseline */
+  .head-gap-sfx { margin-block-start: calc(var(--head-gap) + 1.75rem); }
+
+  /* ── underlined link with wipe on hover (transform only) ── */
+  .u-link {
+    position: relative;
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.3em;
+    color: inherit;
+    text-decoration: none;
+    padding-block: 0.15em;
+  }
+  /* Two lines with transitions (reversible mid-flight, unlike a keyframe):
+     the resting line retracts toward the end, a fresh one draws in from the start. */
+  .u-link::before,
+  .u-link::after {
+    content: "";
+    position: absolute;
+    inset-inline: 0;
+    bottom: 0;
+    height: 1px;
+    background: currentColor;
+    transition: transform 0.45s var(--ease-out-soft);
+  }
+  .u-link::after { transform-origin: right; }
+  .u-link::before { transform-origin: left; transform: scaleX(0); }
+  .u-link .arrow { display: inline-block; transition: transform 0.4s var(--ease-out-soft); }
+  @media (hover: hover) and (pointer: fine) {
+    :is(a, button):hover > .u-link::after,
+    .u-link:hover::after { transform: scaleX(0); }
+    :is(a, button):hover > .u-link::before,
+    .u-link:hover::before { transform: scaleX(1); transition-delay: 0.2s; }
+    .u-link:hover .arrow { transform: translate(2px, 2px); }
+  }
+  /* press feedback for touch (tap highlight is off): the arrow nudge, same values */
+  :is(a, button):active > .u-link .arrow,
+  .u-link:active .arrow { transform: translate(2px, 2px); }
+
+  /* ── stacked section card ── */
+  /* native sticky = scrolled by the compositor, never lags behind the finger.
+     --stack-top = min(0, viewport − card height) is measured by useStack on resize only:
+     short cards stick at their top, tall cards first scroll through to their bottom edge. */
+  .stack-card {
+    position: sticky;
+    top: var(--stack-top, 0px);
+    border-radius: var(--card-r) var(--card-r) 0 0;
+    isolation: isolate;
+  }
+  .stack-card + .stack-card { margin-top: calc(var(--card-r) * -1); }
+  .stack-dim {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: #000;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 30;
+  }
+
+  /* grain: static noise tile, composited once */
+  .grain {
+    position: fixed;
+    inset: 0;
+    z-index: 90;
+    pointer-events: none;
+    background-image: url("/img/grain.png");
+    background-size: 128px 128px;
+    opacity: 0.06;
+    transform: translateZ(0);
+  }
+
+  /* masks for reveals: room for descenders */
+  .mask { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: 0.08em; margin-bottom: -0.08em; }
+  .mask-block { display: block; overflow: hidden; padding-bottom: 0.08em; margin-bottom: -0.08em; }
+
+  .photo { background: #1a1a1a; overflow: hidden; position: relative; }
+  .photo img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(1); }
+
+  .sr-only-focusable:not(:focus) {
+    position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap;
+  }
+}
+
+
+
+/* scroll-linked motion on the compositor (CSS scroll-driven animations).
+   Browsers without animation-timeline simply show the still image. */
+@keyframes photo-par {
+  from { transform: translateY(-7%) scale(1.16); }
+  to { transform: translateY(7%) scale(1.16); }
+}
+@keyframes hero-drift {
+  from { transform: translateY(0%); }
+  to { transform: translateY(10%); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .photo-par {
+      animation: photo-par linear both;
+      animation-timeline: view();
+      animation-range: cover 0% cover 100%;
+    }
+    .hero-drift {
+      animation: hero-drift linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 100svh;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@keyframes fade-in { from { opacity: 0 } to { opacity: 1 } }
+@keyframes pop-in { from { opacity: 0; transform: translateY(-6px) } to { opacity: 1; transform: none } }
+@keyframes sheet-in { from { transform: translateY(-100%) } to { transform: none } }
+@keyframes sheet-out { from { transform: none; opacity: 1 } to { transform: translateY(-8%); opacity: 0 } }
+@keyframes progress { 0% { transform: scaleX(0); transform-origin: left } 50% { transform: scaleX(1); transform-origin: left } 50.01% { transform-origin: right } 100% { transform: scaleX(0); transform-origin: right } }
