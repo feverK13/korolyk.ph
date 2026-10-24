@@ -2,8 +2,6 @@
 
 React + Vite + TypeScript, Tailwind v4, shadcn/ui (Accordion, Sheet), framer-motion. Статичний сайт: звʼязок через телефон та Instagram.
 
-> Форму заявки прибрано. Тека `server/` (Flask → Telegram) більше не використовується сайтом, її можна видалити разом із залежностями `react-day-picker`, `date-fns`, `sonner`, `@radix-ui/react-popover`.
-
 ## Запуск
 ```bash
 npm i

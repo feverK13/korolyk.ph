@@ -6,6 +6,4 @@ import { defineConfig } from 'vite'
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   resolve: { alias: { '@': path.resolve(__dirname, './src') } },
-  server: { proxy: { '/api': 'http://127.0.0.1:5000' } },
-  preview: { proxy: { '/api': 'http://127.0.0.1:5000' } },
 })
