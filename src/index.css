@@ -39,6 +39,7 @@
   --ring: currentColor;
   --radius: 0px;
   --card-r: 22px;
+  --edge-fade-h: 40px;
   --gutter: 20px;
   /* vertical rhythm: one set of steps for every section */
   --sec-top: 56px;     /* card edge → section heading */
@@ -204,6 +205,38 @@
     background-size: 128px 128px;
     opacity: 0.06;
     transform: translateZ(0);
+  }
+
+  /* status-bar edge. Safari 26 tints the bar from the fixed/sticky element under (centre, ~4px):
+     .edge-top is a real >90%-wide, >10px-tall solid layer so the sample is always ink,
+     .edge-fade softens the cards sliding under the bar (solid through the safe area, then fades). */
+  .edge-top {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: -7px;
+    height: 12px;
+    background-color: var(--color-ink);
+    z-index: 110;
+  }
+  .edge-fade {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: calc(env(safe-area-inset-top, 0px) + var(--edge-fade-h, 40px));
+    pointer-events: none;
+    z-index: 65;
+    background: linear-gradient(
+      to bottom,
+      var(--color-ink) env(safe-area-inset-top, 0px),
+      color-mix(in srgb, var(--color-ink) 92%, transparent) calc(env(safe-area-inset-top, 0px) + 5px),
+      color-mix(in srgb, var(--color-ink) 74%, transparent) calc(env(safe-area-inset-top, 0px) + 11px),
+      color-mix(in srgb, var(--color-ink) 50%, transparent) calc(env(safe-area-inset-top, 0px) + 18px),
+      color-mix(in srgb, var(--color-ink) 26%, transparent) calc(env(safe-area-inset-top, 0px) + 26px),
+      color-mix(in srgb, var(--color-ink) 9%, transparent) calc(env(safe-area-inset-top, 0px) + 34px),
+      transparent 100%
+    );
   }
 
   /* masks for reveals: room for descenders */

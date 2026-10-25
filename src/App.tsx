@@ -28,6 +28,8 @@ export default function App() {
         <Faq />
         <Contacts />
       </main>
+      <div className="edge-fade" aria-hidden="true" />
+      <div className="edge-top" aria-hidden="true" />
       <div className="grain" aria-hidden="true" />
     </MotionConfig>
     </LazyMotion>
