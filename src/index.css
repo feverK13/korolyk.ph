@@ -295,3 +295,7 @@
 
 /* Instagram's webview already starts below its own bar: no fade (raise to ~12px if the edge looks hard) */
 html[data-iab="instagram"] { --edge-fade-h: 0px; }
+
+/* Telegram: no edge layers (they made the floating-chrome case worse) */
+html[data-iab="telegram"] .edge-top,
+html[data-iab="telegram"] .edge-fade { display: none; }
