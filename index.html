@@ -2,6 +2,14 @@
 <html lang="uk">
   <head>
     <meta charset="UTF-8" />
+    <script>
+      // in-app browser flag, set before first paint (see [data-iab] rules in index.css)
+      (function () {
+        var d = document.documentElement
+        if (typeof window.TelegramWebviewProxy !== 'undefined') d.setAttribute('data-iab', 'telegram')
+        else if (/Instagram/i.test(navigator.userAgent)) d.setAttribute('data-iab', 'instagram')
+      })()
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <!-- seo:start — dev defaults; `npm run build` replaces this block with tags generated from src/config.ts (seo) -->
     <title>Імʼя Прізвище — портретна фотографка</title>
