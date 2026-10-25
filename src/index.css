@@ -175,11 +175,11 @@
 
   /* ── stacked section card ── */
   /* native sticky = scrolled by the compositor, never lags behind the finger.
-     --stack-top = min(0, viewport − card height) is measured by useStack on resize only:
+     top = min(0, 100svh − card height); --stack-h is measured by useStack when a card resizes:
      short cards stick at their top, tall cards first scroll through to their bottom edge. */
   .stack-card {
     position: sticky;
-    top: var(--stack-top, 0px);
+    top: min(0px, calc(100svh - var(--stack-h, 0px)));
     border-radius: var(--card-r) var(--card-r) 0 0;
     isolation: isolate;
   }

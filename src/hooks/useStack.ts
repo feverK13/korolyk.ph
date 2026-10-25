@@ -7,10 +7,11 @@ import { useEffect } from 'react'
  * or a momentum fling the way JS counter-scrolling (translateY on scroll) does.
  *
  * This hook only:
- *  - measures each card on resize and sets --stack-top = min(0, vh − height):
- *    a card shorter than the viewport sticks at its top edge, a taller one first
- *    scrolls through and sticks at its bottom edge — so a card is never covered
- *    before its content has been on screen;
+ *  - measures each card's height and sets --stack-h; CSS derives
+ *    top = min(0, 100svh − height): a card shorter than the viewport sticks at its top
+ *    edge, a taller one first scrolls through and sticks at its bottom edge — so a card
+ *    is never covered before its content has been on screen. svh is stable while the
+ *    mobile browser bars collapse, so scrolling never re-measures or moves the cards;
  *  - dims the card underneath while the next one slides over (opacity only, rAF).
  */
 export function useStack(enabled = true) {
@@ -29,10 +30,9 @@ export function useStack(enabled = true) {
     })
 
     const measure = () => {
-      vh = window.innerHeight
       for (const s of sections) {
-        const top = `${Math.min(0, vh - s.offsetHeight)}px`
-        if (s.style.getPropertyValue('--stack-top') !== top) s.style.setProperty('--stack-top', top)
+        const h = `${s.offsetHeight}px`
+        if (s.style.getPropertyValue('--stack-h') !== h) s.style.setProperty('--stack-h', h)
       }
       update()
     }
@@ -56,11 +56,16 @@ export function useStack(enabled = true) {
       if (!frame) frame = requestAnimationFrame(update)
     }
     let resizeT = 0
-    const onResize = () => {
+    const onSize = () => {
       window.clearTimeout(resizeT)
       resizeT = window.setTimeout(measure, 80)
     }
-    const ro = new ResizeObserver(onResize)
+    // viewport height changes (mobile bars) only feed the dim maths; they never touch layout
+    const onResize = () => {
+      vh = window.innerHeight
+      onScroll()
+    }
+    const ro = new ResizeObserver(onSize)
     sections.forEach((s) => ro.observe(s))
     window.addEventListener('scroll', onScroll, { passive: true })
     window.addEventListener('resize', onResize)
