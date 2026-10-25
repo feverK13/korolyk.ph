@@ -51,10 +51,14 @@ export function Header() {
 
   return (
     <header
-      className="pointer-events-none fixed inset-x-0 top-0 z-[70] text-white mix-blend-difference transition-transform duration-500 ease-(--ease-out-soft)"
+      className="pointer-events-none fixed inset-x-0 top-0 z-[70] text-white mix-blend-difference"
       onFocusCapture={() => setHidden(false)}
-      style={{ transform: hidden && !open ? 'translateY(-110%)' : undefined }}
     >
+      {/* transform lives on an inner layer: animating it on the blend-mode element itself re-blends every frame on iOS */}
+      <div
+        className="transition-transform duration-500 ease-(--ease-out-soft)"
+        style={{ transform: hidden && !open ? 'translateY(-110%)' : undefined }}
+      >
       <div className="wrap flex items-start justify-between pt-[max(1rem,env(safe-area-inset-top))] md:pt-[max(1.5rem,env(safe-area-inset-top))]">
         <a
           href="#top"
@@ -120,6 +124,7 @@ export function Header() {
             </div>
           </SheetContent>
         </Sheet>
+      </div>
       </div>
     </header>
   )
