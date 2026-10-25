@@ -66,12 +66,18 @@ export function useStack(enabled = true) {
       onScroll()
     }
     const ro = new ResizeObserver(onSize)
-    sections.forEach((s) => ro.observe(s))
+    // border-box: padding-only changes (e.g. env(safe-area-inset-bottom) resolving late
+    // in in-app browsers) alter offsetHeight but not the default content-box RO reports
+    sections.forEach((s) => ro.observe(s, { box: 'border-box' }))
+    void document.fonts?.ready.then(onSize)
+    const imgs = sections.flatMap((s) => Array.from(s.querySelectorAll('img')).filter((i) => !i.complete))
+    imgs.forEach((i) => i.addEventListener('load', onSize, { once: true }))
     window.addEventListener('scroll', onScroll, { passive: true })
     window.addEventListener('resize', onResize)
     measure()
     return () => {
       ro.disconnect()
+      imgs.forEach((i) => i.removeEventListener('load', onSize))
       window.removeEventListener('scroll', onScroll)
       window.removeEventListener('resize', onResize)
       window.clearTimeout(resizeT)
