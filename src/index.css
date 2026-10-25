@@ -292,3 +292,6 @@
 @keyframes sheet-in { from { transform: translateY(-100%) } to { transform: none } }
 @keyframes sheet-out { from { transform: none; opacity: 1 } to { transform: translateY(-8%); opacity: 0 } }
 @keyframes progress { 0% { transform: scaleX(0); transform-origin: left } 50% { transform: scaleX(1); transform-origin: left } 50.01% { transform-origin: right } 100% { transform: scaleX(0); transform-origin: right } }
+
+/* Instagram's webview already starts below its own bar: no fade (raise to ~12px if the edge looks hard) */
+html[data-iab="instagram"] { --edge-fade-h: 0px; }
