@@ -107,9 +107,13 @@ type PhotoProps = {
   eager?: boolean
   parallax?: boolean
   width?: number
+  /** real pixel height of the file (defaults to width / ratio) */
+  height?: number
+  /** CSS object-position for the cover crop, e.g. '50% 25%' (keeps the face in frame) */
+  position?: string
 }
 
-export function Photo({ src, alt, ratio, className, caption, eager, parallax = true, width = 1200 }: PhotoProps) {
+export function Photo({ src, alt, ratio, className, caption, eager, parallax = true, width = 1200, height, position }: PhotoProps) {
 
   return (
     <motion.figure
@@ -132,10 +136,11 @@ export function Photo({ src, alt, ratio, className, caption, eager, parallax = t
           src={src}
           alt={alt}
           width={width}
-          height={Math.round(width / ratio)}
+          height={height ?? Math.round(width / ratio)}
           loading={eager ? 'eager' : 'lazy'}
           decoding="async"
           className={parallax ? 'photo-par' : undefined}
+          style={position ? { objectPosition: position } : undefined}
         />
       </motion.div>
       {caption ? (

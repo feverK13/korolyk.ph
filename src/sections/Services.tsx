@@ -39,6 +39,9 @@ export function Services() {
                 </div>
               </div>
               {flip ? null : photo(s)}
+              <Rise as="p" className="mute col-span-12 mt-5 max-w-[52ch] text-[0.8125rem] leading-[1.6] md:text-[0.9375rem]">
+                {s.desc}
+              </Rise>
               <Rise className={cn('col-span-12 mt-3 flex', flip ? 'justify-start' : 'justify-end')}>
                 <a
                   href="#contacts"

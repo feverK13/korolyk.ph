@@ -42,35 +42,37 @@ export function Hero() {
       <div className="wrap @container relative pt-20 md:pt-24 lg:grid lg:min-h-[100svh] lg:grid-cols-12 lg:gap-x-6 lg:pb-10 lg:pt-28">
         {/* Portrait: sharp layer + pre-blurred layer crossfade (no live filter animation) */}
         <div className="relative -mx-[var(--gutter)] lg:col-span-6 lg:col-start-7 lg:row-start-1 lg:mx-0 lg:self-stretch">
-          <div className="photo relative aspect-[4/5] md:aspect-[5/4.4] lg:aspect-auto lg:h-full lg:min-h-[640px]">
+          <div className="photo relative aspect-[2/3] md:aspect-[5/4.4] lg:aspect-auto lg:h-full lg:min-h-[640px]">
             {/* gentle drift while leaving the hero: CSS scroll-driven (.hero-drift), compositor thread */}
             <div className="hero-drift absolute inset-0">
             <motion.img
               ref={imgRef}
-              src="/img/hero.webp"
-              alt={`${person.firstName} ${person.lastName}, портрет`}
-              width={1200}
-              height={1500}
+              src="/img/anastasia-p01.jpg"
+              alt={`${person.firstName} ${person.lastName} стоїть на балконі на тлі старих будинків`}
+              width={853}
+              height={1280}
               fetchPriority="high"
               decoding="async"
               onLoad={() => setLoaded(true)}
               initial={reduce ? false : { scale: 1.06 }}
               animate={loaded ? { scale: 1 } : undefined}
               transition={{ duration: 1.4, ease: EASE }}
-              className="absolute inset-0 h-full w-full object-cover"
+              className="absolute inset-0 h-full w-full object-cover object-[50%_36%]"
             />
             </div>
             <motion.img
-              src="/img/hero-blur.webp"
+              src="/img/hero-blur.jpg"
               alt=""
               aria-hidden="true"
-              width={300}
-              height={375}
+              width={36}
+              height={54}
               initial={{ opacity: 1 }}
               animate={{ opacity: loaded ? 0 : 1 }}
               transition={{ duration: reduce ? 0 : 0.6, ease: 'easeOut', delay: reduce ? 0 : 0.1 }}
-              className="pointer-events-none absolute inset-0 h-full w-full scale-110 object-cover"
+              className="pointer-events-none absolute inset-0 h-full w-full scale-110 object-cover object-[50%_36%]"
             />
+            {/* scrim keeps the white links and name readable over the bright sky and facade */}
+            <div aria-hidden="true" className="absolute inset-0 bg-ink/45" />
             <div aria-hidden="true" className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-ink/70 to-transparent" />
           </div>
 
@@ -97,11 +99,11 @@ export function Hero() {
         {/* one clean <h1> for search engines and screen readers; the split visual name below is decorative */}
         <div
           ref={nameRef}
-          className="t-display relative z-10 -mt-[0.98em] lg:col-span-12 lg:col-start-1 lg:row-start-1 lg:mt-0 lg:self-end lg:pb-[18vh]"
+          className="t-display pointer-events-none relative z-10 -mt-[0.98em] lg:col-span-12 lg:col-start-1 lg:row-start-1 lg:mt-0 lg:self-end lg:pb-[18vh]"
           style={{ fontSize: 'var(--fit, min(236px, 25cqi))' }}
         >
           <h1 id="hero-title" tabIndex={-1} className="sr-only">
-            {person.firstName} {person.lastName} — портретна фотографка, {person.city}
+            {person.firstName} {person.lastName} — fashion photographer, {person.city}
           </h1>
           <span aria-hidden="true" className="block">
             <span className="mask-block text-end lg:text-start lg:ps-[0.6em]">
@@ -116,7 +118,7 @@ export function Hero() {
             <span className="mask-block relative z-10 -my-[0.04em] ps-[0.12em] text-[max(0.21em,0.8125rem)] font-normal tracking-[-0.03em] leading-[1.1] lg:ps-[0.5em]">
               <motion.span className="inline-block whitespace-nowrap" data-fit-line variants={line} custom={1} initial={reduce ? false : 'hidden'} animate="shown">
                 (
-                <span className="t-italic italic font-normal">портретна</span>&nbsp; фотографка)
+                <span className="t-italic italic font-normal">fashion</span>&nbsp;photographer)
               </motion.span>
             </span>
             <span className="mask-block -ms-[0.05em]">
@@ -149,7 +151,7 @@ export function Hero() {
           className="relative z-10 lg:col-span-4 lg:col-start-1 lg:row-start-1 lg:self-end"
         >
           <p className="ms-auto mt-7 max-w-[30ch] text-[0.8125rem] leading-[1.6] md:text-[0.9375rem] lg:ms-0 lg:mt-0">
-            Знімаю людей такими, якими їх бачать близькі: без завчених поз і ретуші до невпізнання. Чорно-біле, бо так лишається головне — погляд, жест, тиша між словами.
+            Втілюю естетику моди у персональних лукбуках та світських репортажах. Працюю з глибоким відчуттям стилю, створюючи кадр, що транслює впевненість,&nbsp;статус та&nbsp;енергію образу.
           </p>
         </motion.div>
       </div>

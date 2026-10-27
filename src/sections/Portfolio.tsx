@@ -3,7 +3,7 @@ import { Photo, Rise, RevealWords, StackSection, TextLink } from '@/components/p
 
 export function Portfolio() {
   // the layout has five slots; any of them may be empty (fewer works in config) without breaking the page
-  type Work = { src: string; alt: string; ratio: number; title: string; index: string; note?: string }
+  type Work = { src: string; alt: string; ratio: number; w: number; h: number; pos: string; title: string; index: string; note?: string }
   const [w1, w2, w3, w4, w5] = works as readonly Work[] as (Work | undefined)[]
   if (!w1) return null
   return (
@@ -20,7 +20,7 @@ export function Portfolio() {
         <div className="head-gap-sfx grid grid-cols-12 gap-x-4 gap-y-14 md:gap-x-6 md:gap-y-24">
           {/* 1 — small square left, note right-bottom */}
           <div className="col-span-6 md:col-span-4 lg:col-span-3 lg:col-start-2">
-            <Photo src={w1.src} alt={w1.alt} ratio={w1.ratio} caption={{ title: w1.title, index: w1.index }} width={1000} />
+            <Photo src={w1.src} alt={w1.alt} ratio={w1.ratio} caption={{ title: w1.title, index: w1.index }} width={w1.w} height={w1.h} position={w1.pos} />
           </div>
           {w1.note ? (
             <Rise as="p" className="t-cap col-span-6 self-end pb-8 text-mute-ink md:col-span-4 md:text-sm lg:col-span-3">
@@ -31,21 +31,21 @@ export function Portfolio() {
           {/* 2 — wide */}
           {w2 ? (
           <div className="col-span-12 md:col-span-9 md:col-start-3 lg:col-span-7 lg:col-start-6">
-            <Photo src={w2.src} alt={w2.alt} ratio={w2.ratio} caption={{ title: w2.title, index: w2.index }} width={1500} />
+            <Photo src={w2.src} alt={w2.alt} ratio={w2.ratio} caption={{ title: w2.title, index: w2.index }} width={w2.w} height={w2.h} position={w2.pos} />
           </div>
           ) : null}
 
           {/* 3 — panoramic shifted right */}
           {w3 ? (
           <div className="col-span-9 col-start-4 md:col-span-7 md:col-start-6 lg:col-span-5 lg:col-start-2">
-            <Photo src={w3.src} alt={w3.alt} ratio={w3.ratio} caption={{ title: w3.title, index: w3.index }} width={1400} />
+            <Photo src={w3.src} alt={w3.alt} ratio={w3.ratio} caption={{ title: w3.title, index: w3.index }} width={w3.w} height={w3.h} position={w3.pos} />
           </div>
           ) : null}
 
           {/* 4 — portrait left + text right-top */}
           {w4 ? (
           <div className="col-span-6 md:col-span-5 lg:col-span-4 lg:col-start-7">
-            <Photo src={w4.src} alt={w4.alt} ratio={w4.ratio} caption={{ title: w4.title, index: w4.index }} width={900} />
+            <Photo src={w4.src} alt={w4.alt} ratio={w4.ratio} caption={{ title: w4.title, index: w4.index }} width={w4.w} height={w4.h} position={w4.pos} />
           </div>
           ) : null}
           {w4?.note ? (
@@ -55,7 +55,12 @@ export function Portfolio() {
           ) : null}
 
           {/* 5 — more projects + small portrait right */}
-          <div className="col-span-7 self-end pb-8 md:col-span-6 lg:col-span-5 lg:col-start-2">
+          <div className="col-span-7 flex flex-col items-start justify-end gap-8 pb-8 md:col-span-6 lg:col-span-5 lg:col-start-2">
+            {w5?.note ? (
+              <Rise as="p" className="t-cap max-w-[28ch] text-mute-ink md:text-sm">
+                {w5.note}
+              </Rise>
+            ) : null}
             <TextLink
               href={contacts.instagramHref}
               external
@@ -71,7 +76,7 @@ export function Portfolio() {
           </div>
           {w5 ? (
           <div className="col-span-5 md:col-span-4 md:col-start-9 lg:col-span-3 lg:col-start-9">
-            <Photo src={w5.src} alt={w5.alt} ratio={w5.ratio} caption={{ title: w5.title, index: w5.index }} width={800} />
+            <Photo src={w5.src} alt={w5.alt} ratio={w5.ratio} caption={{ title: w5.title, index: w5.index }} width={w5.w} height={w5.h} position={w5.pos} />
           </div>
           ) : null}
         </div>

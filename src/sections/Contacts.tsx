@@ -9,8 +9,15 @@ export function Contacts() {
   return (
     <StackSection id="contacts" tone="ink" labelledBy="contacts-title" className="pb-[calc(2rem+env(safe-area-inset-bottom,0px))] pt-[var(--sec-top)]">
       <div className="wrap md:grid md:grid-cols-12 md:gap-x-6 lg:items-stretch">
-        <div className="md:col-span-7 lg:col-span-5">
-          <Photo src="/img/contact.webp" alt={`${person.firstName} ${person.lastName}, портрет`} ratio={4 / 5} width={1200} />
+        <div className="md:col-span-12 lg:col-span-6">
+          <Photo
+            src="/img/anastasia-p03.jpg"
+            alt={`${person.firstName} ${person.lastName} лежить на комоді, підвівши ногу на підборі, і дивиться через плече`}
+            ratio={1280 / 853}
+            width={1280}
+            height={853}
+            position="20% 38%"
+          />
         </div>
         <div className="mt-12 flex flex-col md:col-span-12 lg:col-span-6 lg:col-start-7 lg:mt-0">
           <SectionHead id="contacts-title" title="контакти" meta={person.year} className="!mx-0 w-full !px-0" />
@@ -41,7 +48,7 @@ export function Contacts() {
             ))}
           </ul>
           <p className="mute mt-8 max-w-[36ch] text-[0.8125rem] leading-relaxed">
-            Пишіть як зручно — відповідаю всюди однаково швидко. Знімаю в {person.city} та області, виїзд в інші міста — за домовленістю.
+            Пишіть як зручно — відповідаю всюди однаково швидко. Знімаю в {person.cityIn} та області, виїзд в інші міста — за домовленістю.
           </p>
 
           <footer className="t-cap mute mt-auto flex items-baseline justify-between gap-4 pt-16">

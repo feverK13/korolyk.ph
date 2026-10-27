@@ -1,22 +1,15 @@
 import * as React from 'react'
-import { contacts, nav, person } from '@/config'
+import { contacts, nav } from '@/config'
 import { Sheet, SheetClose, SheetContent, SheetDescription, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
 import { scrollToSection } from '@/lib/scroll'
 
-/** Ref 1 logo: oversized first letters, second line shifted. */
+/** Single-line wordmark: korolyk*ph. The asterisk is pulled down from cap height to sit on the x-height line. */
 export function Logo({ className = '' }: { className?: string }) {
-  const [f0, ...f] = [...person.firstName]
-  const [l0, ...l] = [...person.lastName]
   return (
-    <span className={`font-wide font-extrabold lowercase leading-[0.82] tracking-[-0.04em] ${className}`} aria-hidden="true">
-      <span className="block">
-        <span className="text-[2.1em] uppercase leading-[0.7] align-[-0.02em]">{f0}</span>
-        <span>{f.join('')}</span>
-      </span>
-      <span className="mt-[0.06em] block pl-[0.9em]">
-        <span className="text-[2.1em] uppercase leading-[0.7] align-[-0.02em]">{l0}</span>
-        <span>{l.join('')}</span>
-      </span>
+    <span className={`font-wide whitespace-nowrap font-extrabold lowercase leading-none tracking-[-0.04em] ${className}`} aria-hidden="true">
+      korolyk
+      <span className="relative top-[0.14em] mx-[0.03em] inline-block">*</span>
+      ph
     </span>
   )
 }
@@ -62,15 +55,13 @@ export function Header() {
       <div className="wrap flex items-start justify-between pt-[max(1rem,env(safe-area-inset-top))] md:pt-[max(1.5rem,env(safe-area-inset-top))]">
         <a
           href="#top"
-          className="pointer-events-auto -m-2 p-2 text-[0.8rem] md:text-[0.95rem]"
+          className="pointer-events-auto -ml-2 inline-flex min-h-12 items-center px-2 text-[0.8rem] md:text-[0.95rem]"
           onClick={(e) => {
             e.preventDefault()
             window.scrollTo({ top: 0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' })
           }}
         >
-          <span className="sr-only">
-            {person.firstName} {person.lastName} — на початок
-          </span>
+          <span className="sr-only">korolyk ph, на початок</span>
           <Logo />
         </a>
 
@@ -86,7 +77,7 @@ export function Header() {
           </SheetTrigger>
           <SheetContent aria-describedby="menu-desc">
             <div className="wrap flex w-full items-start justify-between pt-[max(1rem,env(safe-area-inset-top))] md:pt-[max(1.5rem,env(safe-area-inset-top))]">
-              <span className="text-[0.8rem] md:text-[0.95rem]">
+              <span className="inline-flex min-h-12 items-center text-[0.8rem] md:text-[0.95rem]">
                 <Logo />
               </span>
               <SheetClose className="-mr-2 grid size-12 place-items-center" aria-label="Закрити меню">

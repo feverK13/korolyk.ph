@@ -25,9 +25,9 @@ export function jsonLd() {
         '@type': 'Person',
         '@id': `${url}#person`,
         name: fullName,
-        jobTitle: 'Фотографка',
+        jobTitle: 'Fashion photographer',
         url,
-        image: abs('/img/hero.webp'),
+        image: abs('/img/anastasia-p01.jpg'),
         telephone: contacts.phone,
         sameAs: [contacts.instagramHref],
         address: { '@type': 'PostalAddress', addressLocality: person.city, addressCountry: 'UA' },
@@ -35,7 +35,7 @@ export function jsonLd() {
       {
         '@type': 'ProfessionalService',
         '@id': `${url}#service`,
-        name: `${fullName} — фотографка`,
+        name: `${fullName} — fashion photographer`,
         description: seo.description,
         url,
         image: abs(seo.ogImage),
@@ -54,7 +54,7 @@ export function jsonLd() {
               name: s.title,
               description: `${s.duration}, ${s.photos}, готово ${s.term}`,
             },
-            // add "price" + "priceCurrency": "UAH" once real prices replace [ЦІНА]
+            // add "price" + "priceCurrency": "UAH"
           })),
         },
       },
