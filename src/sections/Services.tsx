@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils'
 
 const photo = (s: (typeof services)[number]) => (
   <div className="col-span-6 md:col-span-5 lg:col-span-6">
-    <Photo src={s.img} alt={`Приклад зйомки: ${s.title}`} ratio={4 / 5} width={900} />
+    <Photo src={s.img} alt={`Приклад зйомки: ${s.title}`} ratio={853 / 1280} width={853} height={1280} />
   </div>
 )
 

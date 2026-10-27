@@ -36,7 +36,7 @@ export function Hero() {
       id="top"
       data-stack
       aria-labelledby="hero-title"
-      className="stack-card on-ink relative bg-ink text-paper"
+      className="stack-card on-ink bg-ink text-paper"
       style={{ borderRadius: 0 }}
     >
       <div className="wrap @container relative pt-20 md:pt-24 lg:grid lg:min-h-[100svh] lg:grid-cols-12 lg:gap-x-6 lg:pb-10 lg:pt-28">
@@ -72,7 +72,7 @@ export function Hero() {
               className="pointer-events-none absolute inset-0 h-full w-full scale-110 object-cover object-[50%_36%]"
             />
             {/* scrim keeps the white links and name readable over the bright sky and facade */}
-            <div aria-hidden="true" className="absolute inset-0 bg-ink/45" />
+            <div aria-hidden="true" className="absolute inset-0 bg-ink/60" />
             <div aria-hidden="true" className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-ink/70 to-transparent" />
           </div>
 
@@ -81,7 +81,7 @@ export function Hero() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.9 }}
-            className="absolute inset-x-0 top-[44%] flex flex-wrap items-end justify-between gap-x-4 gap-y-1 px-[var(--gutter)]"
+            className="absolute inset-x-0 top-[44%] lg:top-[8%] flex flex-wrap items-end justify-between gap-x-4 gap-y-1 px-[var(--gutter)]"
           >
             <TextLink href="#works" onClick={onAnchorClick} arrow className="t-italic text-[1.6rem] font-normal leading-none md:text-[2rem]">
               роботи
@@ -99,17 +99,17 @@ export function Hero() {
         {/* one clean <h1> for search engines and screen readers; the split visual name below is decorative */}
         <div
           ref={nameRef}
-          className="t-display pointer-events-none relative z-10 -mt-[0.98em] lg:col-span-12 lg:col-start-1 lg:row-start-1 lg:mt-0 lg:self-end lg:pb-[18vh]"
+          className="t-display pointer-events-none relative z-10 -mt-[0.98em] lg:col-span-12 lg:col-start-1 lg:row-start-1 lg:mt-0 lg:self-end lg:max-w-[69%] lg:pb-[max(18vh,11rem)]"
           style={{ fontSize: 'var(--fit, min(236px, 25cqi))' }}
         >
           <h1 id="hero-title" tabIndex={-1} className="sr-only">
             {person.firstName} {person.lastName} — fashion photographer, {person.city}
           </h1>
           <span aria-hidden="true" className="block">
-            <span className="mask-block text-end lg:text-start lg:ps-[0.6em]">
+            <span className="mask-block text-end lg:text-start">
               <motion.span className="inline-block" variants={line} custom={0} initial={reduce ? false : 'hidden'} animate="shown">
                 {parts(first).map((p, i) => (
-                  <span key={i} className="inline-block" data-fit-line>
+                  <span key={i} className="inline-block lg:ps-[0.6em]" data-fit-line>
                     {p}
                   </span>
                 ))}
