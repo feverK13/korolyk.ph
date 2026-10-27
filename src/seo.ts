@@ -5,12 +5,29 @@
  */
 import { contacts, faq, person, seo, services, works } from './config'
 
+export type Site = {
+  /** адреса сайту без завершального слеша; null, якщо VITE_SITE_URL не задано */
+  url: string | null
+  /** індексація дозволена лише з доменом І на production-деплої Vercel */
+  index: boolean
+}
+
+type Env = Record<string, string | undefined>
+
+export function resolveSite(env: Env): Site {
+  const raw = env.VITE_SITE_URL?.trim().replace(/\/+$/, '')
+  const url = raw || null
+  return { url, index: Boolean(url) && env.VERCEL_ENV === 'production' }
+}
+
 const esc = (v: string) => v.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-const abs = (path: string) => new URL(path, seo.siteUrl + '/').href
 const fullName = `${person.firstName} ${person.lastName}`
 
-export function jsonLd() {
+export function jsonLd(site: Site) {
+  const abs = (path: string) => (site.url ? new URL(path, site.url + '/').href : path)
   const url = abs('/')
+  const telephone = contacts.phoneHref.replace('tel:', '')
+  const address = { '@type': 'PostalAddress', addressLocality: person.city, addressCountry: 'UA' }
   return {
     '@context': 'https://schema.org',
     '@graph': [
@@ -28,20 +45,20 @@ export function jsonLd() {
         jobTitle: 'Fashion photographer',
         url,
         image: abs('/img/anastasia-p01.jpg'),
-        telephone: contacts.phone,
+        telephone,
         sameAs: [contacts.instagramHref],
-        address: { '@type': 'PostalAddress', addressLocality: person.city, addressCountry: 'UA' },
+        address,
       },
       {
         '@type': 'ProfessionalService',
         '@id': `${url}#service`,
-        name: `${fullName} — fashion photographer`,
+        name: `${fullName} — фешн-фотограф`,
         description: seo.description,
         url,
         image: abs(seo.ogImage),
-        telephone: contacts.phone,
-        areaServed: person.city,
-        address: { '@type': 'PostalAddress', addressLocality: person.city, addressCountry: 'UA' },
+        telephone,
+        areaServed: person.cities.map((name) => ({ '@type': 'City', name })),
+        address,
         founder: { '@id': `${url}#person` },
         sameAs: [contacts.instagramHref],
         hasOfferCatalog: {
@@ -49,12 +66,11 @@ export function jsonLd() {
           name: 'Фотозйомки',
           itemListElement: services.map((s) => ({
             '@type': 'Offer',
-            itemOffered: {
-              '@type': 'Service',
-              name: s.title,
-              description: `${s.duration}, ${s.photos}, готово ${s.term}`,
-            },
-            // add "price" + "priceCurrency": "UAH"
+            priceCurrency: 'UAH',
+            ...(s.per
+              ? { priceSpecification: { '@type': 'UnitPriceSpecification', price: s.amount, priceCurrency: 'UAH', unitText: s.per } }
+              : { price: s.amount }),
+            itemOffered: { '@type': 'Service', name: s.title, description: s.desc },
           })),
         },
       },
@@ -77,19 +93,26 @@ export function jsonLd() {
   }
 }
 
-export function headTags() {
+export function headTags(site: Site) {
+  const abs = (path: string) => (site.url ? new URL(path, site.url + '/').href : path)
   const url = abs('/')
   const image = abs(seo.ogImage)
   return [
     `<title>${esc(seo.title)}</title>`,
     `<meta name="description" content="${esc(seo.description)}" />`,
-    `<meta name="robots" content="${seo.index ? 'index, follow, max-image-preview:large' : 'noindex, nofollow'}" />`,
-    `<link rel="canonical" href="${esc(url)}" />`,
-    `<link rel="alternate" hreflang="uk" href="${esc(url)}" />`,
+    `<meta name="robots" content="${site.index ? 'index, follow, max-image-preview:large' : 'noindex, nofollow'}" />`,
+    // canonical, hreflang and og:url only on an indexable build: a test host never points at (or claims) a real domain
+    ...(site.index
+      ? [
+          `<link rel="canonical" href="${esc(url)}" />`,
+          `<link rel="alternate" hreflang="uk" href="${esc(url)}" />`,
+          `<link rel="alternate" hreflang="x-default" href="${esc(url)}" />`,
+        ]
+      : []),
     `<meta property="og:type" content="website" />`,
     `<meta property="og:site_name" content="${esc(fullName)}" />`,
     `<meta property="og:locale" content="${esc(seo.locale)}" />`,
-    `<meta property="og:url" content="${esc(url)}" />`,
+    ...(site.index ? [`<meta property="og:url" content="${esc(url)}" />`] : []),
     `<meta property="og:title" content="${esc(seo.title)}" />`,
     `<meta property="og:description" content="${esc(seo.description)}" />`,
     `<meta property="og:image" content="${esc(image)}" />`,
@@ -101,11 +124,13 @@ export function headTags() {
     `<meta name="twitter:description" content="${esc(seo.description)}" />`,
     `<meta name="twitter:image" content="${esc(image)}" />`,
     // JSON-LD: "<" escaped so a value can never close the script tag
-    `<script type="application/ld+json">${JSON.stringify(jsonLd()).replace(/</g, '\\u003c')}</script>`,
+    `<script type="application/ld+json">${JSON.stringify(jsonLd(site)).replace(/</g, '\\u003c')}</script>`,
   ].join('\n    ')
 }
 
-export function sitemapXml(lastmod = new Date().toISOString().slice(0, 10)) {
+export function sitemapXml(site: Site, lastmod = new Date().toISOString().slice(0, 10)) {
+  if (!site.index || !site.url) return null
+  const abs = (path: string) => new URL(path, site.url + '/').href
   return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
@@ -116,6 +141,14 @@ export function sitemapXml(lastmod = new Date().toISOString().slice(0, 10)) {
 `
 }
 
-export function robotsTxt() {
-  return seo.index ? `User-agent: *\nAllow: /\n\nSitemap: ${abs('/sitemap.xml')}\n` : `User-agent: *\nDisallow: /\n`
+export function robotsTxt(site: Site) {
+  return site.index && site.url
+    ? `User-agent: *
+Allow: /
+
+Sitemap: ${new URL('/sitemap.xml', site.url + '/').href}
+`
+    : `User-agent: *
+Disallow: /
+`
 }

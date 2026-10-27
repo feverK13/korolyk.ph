@@ -12,6 +12,8 @@ export const person = {
   city: 'Івано-Франківськ',
   /** місцевий відмінок для «знімаю в …» */
   cityIn: 'Івано-Франківську',
+  /** міста, де працює фотограф (для areaServed) */
+  cities: ['Івано-Франківськ', 'Львів'],
   year: new Date().getFullYear(),
   yearsWithCamera: '∞',
 }
@@ -33,17 +35,14 @@ export const contacts = {
  * під час `npm run build` (див. src/seo.ts і scripts/prerender.mjs).
  */
 export const seo = {
-  /** [ДОМЕН] — повна адреса сайту без слешу в кінці. Від неї будуються canonical, og:url і sitemap */
-  siteUrl: 'https://example.com',
-  title: `${person.firstName} ${person.lastName} — fashion photographer, ${person.city}`,
-  /** 140–160 символів: що, де, як звʼязатися */
-  description: `Фешн-фотографка в ${person.cityIn}: персональні лукбуки, світські репортажі та експрес-зйомки. Напишіть в Instagram або зателефонуйте — домовимося про зйомку.`,
+  /* Домен береться зі змінної середовища VITE_SITE_URL під час збірки (див. README, «Налаштування домену»). */
+  title: `${person.firstName} ${person.lastName} — фешн-фотограф, ${person.city}`,
+  /** до ~155 символів: хто, де, що знімає, як звʼязатися */
+  description: `Фешн-фотограф в ${person.cityIn} і Львові: персональні лукбуки, світські репортажі, експрес-зйомки. Напишіть в Instagram або зателефонуйте.`,
   /** 1200×630, лежить у public/img */
   ogImage: '/img/og.jpg',
-  ogImageAlt: `${person.firstName} ${person.lastName}, fashion photographer`,
+  ogImageAlt: `${person.firstName} ${person.lastName} — фешн-фотограф, ${person.city}`,
   locale: 'uk_UA',
-  /** false — сторінку не індексувати (наприклад, на тестовому домені) */
-  index: true,
 }
 
 export const nav = [
@@ -73,11 +72,14 @@ export const services: {
   photos: string
   term: string
   price: string
+  /** сума в гривнях і, якщо ціна за годину, одиниця: для розмітки Offer */
+  amount: number
+  per?: 'HOUR'
   desc: string
 }[] = [
-  { n: '01/', title: 'Personal Editorial', img: '/img/services01.jpg', duration: '1,5–2 год', photos: '40 фото', term: 'до 7 днів', price: '1500 грн', desc: 'Творення професійної журнальної історії з акцентом на ваш образ та деталі. Повний контроль: веду зйомку, підказую виграшні ракурси та працюю з динамікою позування. Глянцева естетика зі збереженням природніх фактур.' },
-  { n: '02/', title: 'Express Lookbook', img: '/img/services02.jpg', duration: '30 хв – 1 год', photos: '25 фото', term: 'до 5 днів', price: '1000 грн', desc: 'Динамічний експрес формат для реалізації однієї сильної ідеї. Максимум енергії та миттєве включення в процес. Ідеальне рішення для оновлення стильного візуалу чи контенту для соцмереж.' },
-  { n: '03/', title: 'Fashion Reportage', img: '/img/services03.jpg', duration: 'погодинно', photos: '80–120 фото', term: 'до 10 днів', price: '1200 грн / год', desc: 'Зйомка стильних приватних та комерційних івентів. Акцент на деталях, образах гостей та загальному настрої. Динамічні кадри зі спалахом' },
+  { n: '01/', title: 'Personal Editorial', img: '/img/services01.jpg', duration: '1,5–2 год', photos: '40 фото', term: 'до 7 днів', price: '1500 грн', amount: 1500, desc: 'Творення професійної журнальної історії з акцентом на ваш образ та деталі. Повний контроль: веду зйомку, підказую виграшні ракурси та працюю з динамікою позування. Глянцева естетика зі збереженням природніх фактур.' },
+  { n: '02/', title: 'Express Lookbook', img: '/img/services02.jpg', duration: '30 хв – 1 год', photos: '25 фото', term: 'до 5 днів', price: '1000 грн', amount: 1000, desc: 'Динамічний експрес формат для реалізації однієї сильної ідеї. Максимум енергії та миттєве включення в процес. Ідеальне рішення для оновлення стильного візуалу чи контенту для соцмереж.' },
+  { n: '03/', title: 'Fashion Reportage', img: '/img/services03.jpg', duration: 'погодинно', photos: '80–120 фото', term: 'до 10 днів', price: '1200 грн / год', amount: 1200, per: 'HOUR', desc: 'Зйомка стильних приватних та комерційних івентів. Акцент на деталях, образах гостей та загальному настрої. Динамічні кадри зі спалахом' },
 ]
 
 export const steps = [

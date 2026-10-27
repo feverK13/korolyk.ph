@@ -26,8 +26,19 @@ npm run build       # dist/ з пререндереним HTML (SSR → hydrate)
 - JSON-LD: `WebSite`, `Person`, `ProfessionalService` з каталогом послуг, `ImageGallery`, `FAQPage` — з тих самих даних, що на сторінці;
 - `dist/sitemap.xml` і `dist/robots.txt` з посиланням на sitemap.
 
-Перед запуском: вписати `seo.siteUrl` (домен), замінити `[ ]`-плейсхолдери, покласти справжнє `public/img/og.jpg` 1200×630. Коли зʼявляться реальні ціни — додати `price` і `priceCurrency: 'UAH'` в `Offer` у `src/seo.ts`. На тестовому домені — `seo.index: false`.
+Домен задається змінною середовища, а не в коді (див. нижче).
 Сторінка пререндерена в HTML, тож пошуковики бачать текст без JS; у кожної секції один `h2`, у сторінки один `h1`.
+
+## Налаштування домену
+Домен — одна змінна: **`VITE_SITE_URL`** (повна адреса без слеша в кінці, наприклад `https://korolyk.example`). Вона читається під час збірки (`scripts/prerender.mjs`) і будує canonical, hreflang, `og:url`, sitemap, robots та JSON-LD.
+
+Індексація вмикається лише коли виконані обидві умови: `VITE_SITE_URL` задано **і** `VERCEL_ENV=production`. В усіх інших випадках (preview-гілки, `*.vercel.app` без змінної, локально) збірка має `noindex, nofollow`, `robots.txt` з `Disallow: /`, без sitemap, canonical і `og:url`. Без `VITE_SITE_URL` збірка не падає, а друкує попередження `[seo]`.
+
+**Як підключити домен:**
+1. Vercel → Project → Settings → Domains: додати домен і прописати DNS.
+2. Vercel → Settings → Environment Variables: `VITE_SITE_URL` = `https://ваш-домен`, середовище **Production** (для Preview не задавати).
+3. Зробити Redeploy продакшн-деплою (змінні зчитуються під час збірки, без перезбірки нічого не зміниться).
+4. Перевірити `https://ваш-домен/robots.txt` (має бути `Allow: /` і `Sitemap:`) та `view-source` (`index, follow`, canonical на ваш домен), потім додати сайт у Google Search Console й подати `sitemap.xml`.
 
 ## Рішення
 Принципи стилю описані в `STYLE-LOCK.md`. Нижче технічні рішення, які варто знати.

@@ -11,4 +11,4 @@ export function render() {
 }
 
 // build-time SEO generators, used by scripts/prerender.mjs
-export { headTags, sitemapXml, robotsTxt } from './seo'
+export { headTags, sitemapXml, robotsTxt, resolveSite } from './seo'
