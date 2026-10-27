@@ -36,13 +36,13 @@ export function Hero() {
       id="top"
       data-stack
       aria-labelledby="hero-title"
-      className="stack-card on-ink bg-ink text-paper"
+      className="stack-card on-ink bg-ink text-paper lg:flex lg:min-h-svh lg:flex-col"
       style={{ borderRadius: 0 }}
     >
-      <div className="wrap @container relative pt-20 md:pt-24 lg:grid lg:min-h-[100svh] lg:grid-cols-12 lg:gap-x-6 lg:pb-10 lg:pt-28">
+      <div className="wrap @container relative pt-20 md:pt-24 lg:grid lg:w-full lg:flex-1 lg:grid-cols-12 lg:gap-x-6 lg:pb-10 lg:pt-28">
         {/* Portrait: sharp layer + pre-blurred layer crossfade (no live filter animation) */}
         <div className="relative -mx-[var(--gutter)] lg:col-span-6 lg:col-start-7 lg:row-start-1 lg:mx-0 lg:self-stretch">
-          <div className="photo relative aspect-[2/3] md:aspect-[5/4.4] lg:aspect-auto lg:h-full lg:min-h-[640px]">
+          <div className="photo relative aspect-[2/3] md:aspect-[5/4.4] lg:aspect-auto lg:h-full lg:min-h-[min(640px,60svh)]">
             {/* gentle drift while leaving the hero: CSS scroll-driven (.hero-drift), compositor thread */}
             <div className="hero-drift absolute inset-0">
             <motion.img
@@ -81,7 +81,7 @@ export function Hero() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.9 }}
-            className="absolute inset-x-0 top-[44%] lg:top-[8%] flex flex-wrap items-end justify-between gap-x-4 gap-y-1 px-[var(--gutter)]"
+            className="absolute inset-x-0 top-[44%] lg:top-auto lg:bottom-[4%] flex flex-wrap items-end justify-between gap-x-4 gap-y-1 px-[var(--gutter)]"
           >
             <TextLink href="#works" onClick={onAnchorClick} arrow className="t-italic text-[1.6rem] font-normal leading-none md:text-[2rem]">
               роботи
@@ -99,8 +99,8 @@ export function Hero() {
         {/* one clean <h1> for search engines and screen readers; the split visual name below is decorative */}
         <div
           ref={nameRef}
-          className="t-display pointer-events-none relative z-10 -mt-[0.98em] lg:col-span-12 lg:col-start-1 lg:row-start-1 lg:mt-0 lg:self-end lg:max-w-[69%] lg:pb-[max(18vh,11rem)]"
-          style={{ fontSize: 'var(--fit, min(236px, 25cqi))' }}
+          className="t-display pointer-events-none relative z-10 -mt-[0.98em] lg:col-span-12 lg:col-start-1 lg:row-start-1 lg:mt-0 lg:self-end lg:max-w-[69%] lg:pb-[max(18vh,11rem)] lg:[--name-cap:22svh]"
+          style={{ fontSize: 'min(var(--fit, min(236px, 25cqi)), var(--name-cap, 100vh))' }}
         >
           <h1 id="hero-title" tabIndex={-1} className="sr-only">
             {person.firstName} {person.lastName} — fashion photographer, {person.city}
@@ -157,7 +157,7 @@ export function Hero() {
       </div>
 
       {/* Ref 1: meta row — city · CTA */}
-      <div className="wrap pb-10 pt-12 lg:pb-8 lg:pt-0">
+      <div className="wrap pb-10 pt-12 lg:w-full lg:pb-8 lg:pt-0">
         <div className="t-meta flex items-baseline justify-between gap-4 border-b border-paper/30 pb-2">
           <span className="mute">
             {person.city} · {person.year}
