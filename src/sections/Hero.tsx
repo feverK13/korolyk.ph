@@ -38,7 +38,7 @@ export function Hero() {
       id="top"
       data-stack
       aria-labelledby="hero-title"
-      className="stack-card on-ink bg-ink text-paper lg:flex lg:min-h-svh lg:flex-col"
+      className="stack-card on-ink bg-ink text-paper pb-8 lg:flex lg:min-h-[calc(100svh+2rem)] lg:flex-col"
       style={{ borderRadius: 0 }}
     >
       <div className="wrap @container relative pt-20 md:pt-24 lg:grid lg:w-full lg:flex-1 lg:grid-cols-12 lg:gap-x-6 lg:pb-10 lg:pt-28">
