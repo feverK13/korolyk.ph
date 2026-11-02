@@ -27,7 +27,7 @@ export function Portfolio() {
       labelledBy="works-title"
       className="sec"
     >
-      <div className="wrap">
+      <div className="wrap pb-12 md:pb-0">
         {/* Ref 2: «featured (works)» */}
         <div className="relative w-fit">
           <RevealWords
@@ -95,25 +95,28 @@ export function Portfolio() {
           ) : null}
 
           {/* 4 — portrait left + text right-top */}
+          {/* mobile: photo and note share one row (own 12-col grid); md+: wrapper vanishes, children sit in the parent grid as before */}
           {w4 ? (
-            <div className="col-span-6 col-start-7 md:col-span-5 md:col-start-auto lg:col-span-4 lg:col-start-7">
-              <Photo
-                src={w4.src}
-                alt={w4.alt}
-                ratio={w4.w / w4.h}
-                caption={{ title: w4.title, index: w4.index }}
-                width={w4.w}
-                height={w4.h}
-              />
+            <div className="col-span-12 grid grid-cols-12 gap-x-4 md:contents">
+              <div className="col-span-6 col-start-7 md:col-span-5 md:col-start-auto lg:col-span-4 lg:col-start-7">
+                <Photo
+                  src={w4.src}
+                  alt={w4.alt}
+                  ratio={w4.w / w4.h}
+                  caption={{ title: w4.title, index: w4.index }}
+                  width={w4.w}
+                  height={w4.h}
+                />
+              </div>
+              {w4.note ? (
+                <Rise
+                  as="p"
+                  className="t-cap col-span-6 col-start-1 row-start-1 text-mute-ink md:col-span-4 md:col-start-8 md:row-start-auto md:text-sm lg:col-span-2 lg:col-start-11"
+                >
+                  {w4.note}
+                </Rise>
+              ) : null}
             </div>
-          ) : null}
-          {w4?.note ? (
-            <Rise
-              as="p"
-              className="t-cap col-span-6 col-start-1 text-mute-ink md:col-span-4 md:col-start-8 md:text-sm lg:col-span-2 lg:col-start-11"
-            >
-              {w4.note}
-            </Rise>
           ) : null}
 
           {/* 5 — more projects + small portrait right */}
@@ -121,7 +124,7 @@ export function Portfolio() {
             {w5?.note ? (
               <Rise
                 as="p"
-                className="t-cap order-2 max-w-[28ch] text-mute-ink md:order-1 md:text-sm"
+                className="t-cap order-2 hidden max-w-[28ch] text-mute-ink md:order-1 md:block md:text-sm"
               >
                 {w5.note}
               </Rise>
@@ -154,6 +157,14 @@ export function Portfolio() {
                 width={w5.w}
                 height={w5.h}
               />
+              {w5.note ? (
+                <Rise
+                  as="p"
+                  className="t-cap mt-3 max-w-[28ch] text-mute-ink md:hidden"
+                >
+                  {w5.note}
+                </Rise>
+              ) : null}
             </div>
           ) : null}
         </div>
