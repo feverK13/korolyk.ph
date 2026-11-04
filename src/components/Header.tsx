@@ -110,7 +110,6 @@ export function Header() {
               </ol>
             </nav>
             <div className="wrap t-meta flex w-full flex-wrap justify-between gap-x-6 gap-y-2 pb-[calc(2rem+env(safe-area-inset-bottom,0px))] pt-6">
-              <a className="u-link" href={contacts.phoneHref}>{contacts.phone}</a>
               <a className="u-link" href={contacts.instagramHref} target="_blank" rel="noopener noreferrer">instagram</a>
             </div>
           </SheetContent>

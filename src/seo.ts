@@ -26,7 +26,6 @@ const fullName = `${person.firstName} ${person.lastName}`
 export function jsonLd(site: Site) {
   const abs = (path: string) => (site.url ? new URL(path, site.url + '/').href : path)
   const url = abs('/')
-  const telephone = contacts.phoneHref.replace('tel:', '')
   const address = { '@type': 'PostalAddress', addressLocality: person.city, addressCountry: 'UA' }
   return {
     '@context': 'https://schema.org',
@@ -45,7 +44,6 @@ export function jsonLd(site: Site) {
         jobTitle: 'Fashion photographer',
         url,
         image: abs('/img/anastasia-p01.jpg'),
-        telephone,
         sameAs: [contacts.instagramHref],
         address,
       },
@@ -56,7 +54,6 @@ export function jsonLd(site: Site) {
         description: seo.description,
         url,
         image: abs(seo.ogImage),
-        telephone,
         areaServed: person.cities.map((name) => ({ '@type': 'City', name })),
         address,
         founder: { '@id': `${url}#person` },
