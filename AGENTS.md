@@ -108,7 +108,7 @@
 
 Заборонено: `overflow-x: hidden` на `body` для маскування проблем; негативні margin «для підгонки»; `100vh` замість `svh`/`dvh`; `filter: blur` у живому режимі та `grayscale` на фото (фото вже чорно-білі; hero p01 кольоровий навмисно); анімація `width`/`height`/`top`/`left` (єдиний виняток: розкриття FAQ); `user-scalable=no`, `maximum-scale=1`; `!important` як спосіб «перебити» конфлікт.
 
-Контакти: лише телефон `+380981118484` і Instagram `https://www.instagram.com/korolyk.ph/`. Форми запиту й Telegram на сайті немає, не повертати.
+Контакти: лише Instagram `https://www.instagram.com/korolyk.ph/`. Форми запиту й Telegram на сайті немає, не повертати.
 
 ---
 
@@ -312,7 +312,7 @@ Reveal тексту: за зразком `staggered-word-reveal`, реаліза
 
 ### 7.3 Що агент перевірити не може
 
-Реальні пристрої. У кожному підсумку дай власнику короткий чеклист для iPhone: Safari, Telegram, Instagram (верх hero на `scrollY = 0`, повільний скрол і fling, bounce угорі, шторка, проходження карток, меню, `tel:` і Instagram-лінк). Локально: `npm run dev -- --host`, відкрити `http://<IP>:5173`; продакшн-збірка: `npm run build`, потім `npm run preview -- --host`.
+Реальні пристрої. У кожному підсумку дай власнику короткий чеклист для iPhone: Safari, Telegram, Instagram (верх hero на `scrollY = 0`, повільний скрол і fling, bounce угорі, шторка, проходження карток, меню і Instagram-лінк). Локально: `npm run dev -- --host`, відкрити `http://<IP>:5173`; продакшн-збірка: `npm run build`, потім `npm run preview -- --host`.
 
 ---
 

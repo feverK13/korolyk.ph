@@ -3,7 +3,6 @@ import { Photo, SectionHead, StackSection } from '@/components/primitives'
 
 export function Contacts() {
   const links = [
-    { label: 'телефон', value: contacts.phone, href: contacts.phoneHref, external: false },
     { label: 'instagram', value: contacts.instagram, href: contacts.instagramHref, external: true },
   ]
   return (

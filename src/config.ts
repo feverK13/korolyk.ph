@@ -26,8 +26,6 @@ export const about = {
 };
 
 export const contacts = {
-  phone: "+38 098 111 84 84",
-  phoneHref: "tel:+380981118484",
   instagram: "@korolyk.ph",
   instagramHref: "https://www.instagram.com/korolyk.ph/",
 };
@@ -40,7 +38,7 @@ export const seo = {
   /* Домен береться зі змінної середовища VITE_SITE_URL під час збірки (див. README, «Налаштування домену»). */
   title: `${person.firstName} ${person.lastName} — фешн-фотограф, ${person.city}`,
   /** до ~155 символів: хто, де, що знімає, як звʼязатися */
-  description: `Фешн-фотограф в ${person.cityIn} і Львові: персональні лукбуки, світські репортажі, експрес-зйомки. Напишіть в Instagram або зателефонуйте.`,
+  description: `Фешн-фотограф в ${person.cityIn} і Львові: персональні лукбуки, світські репортажі, експрес-зйомки. Напишіть в Instagram.`,
   /** 1200×630, лежить у public/img */
   ogImage: "/img/og.jpg",
   ogImageAlt: `${person.firstName} ${person.lastName} — фешн-фотограф, ${person.city}`,
@@ -156,7 +154,7 @@ export const steps = [
   {
     n: "01/",
     title: "повідомлення",
-    text: "Ви пишете в Instagram або телефонуєте. Відповідаю протягом години.",
+    text: "Ви пишете в Instagram. Відповідаю протягом години.",
   },
   {
     n: "02/",

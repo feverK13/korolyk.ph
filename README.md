@@ -1,6 +1,6 @@
 # Лендінг фотографки
 
-React + Vite + TypeScript, Tailwind v4, shadcn/ui (Accordion, Sheet), framer-motion. Статичний сайт: звʼязок через телефон та Instagram.
+React + Vite + TypeScript, Tailwind v4, shadcn/ui (Accordion, Sheet), framer-motion. Статичний сайт: звʼязок через Instagram.
 
 ## Запуск
 ```bash
