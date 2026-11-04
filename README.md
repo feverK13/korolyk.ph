@@ -1,24 +1,26 @@
-# Лендінг фотографки
+# korolyk*ph: лендінг фешн-фотографки
 
-React + Vite + TypeScript, Tailwind v4, shadcn/ui (Accordion, Sheet), framer-motion. Статичний сайт: звʼязок через Instagram.
+React + Vite + TypeScript, Tailwind v4, shadcn/ui (Accordion, Sheet), framer-motion. Статичний односторінковий сайт (пререндер у HTML), деплой на Vercel. Звʼязок лише через Instagram.
 
 ## Запуск
 ```bash
 npm i
 npm run dev         # Vite на :5173
-npm run build       # dist/ з пререндереним HTML (SSR → hydrate), роздавати як статику
+npm run build       # tsc + vite build + SSR + пререндер: dist/ зі статичним HTML
+npm run preview     # локальний перегляд зібраного dist/
+npm run lint        # oxlint
+node --experimental-strip-types scripts/check-seo.mjs   # перевірка SEO після build
 ```
+Тест на телефоні: `npm run dev -- --host` і відкрити `http://<IP>:5173`.
 Перед деплоєм увімкніть gzip або brotli на хостингу/CDN.
 
 ## Що замінити
-- Імʼя, місто, контакти, ціни, послуги й FAQ лежать у `src/config.ts`. Плейсхолдери позначені `[ ]`.
-- Мета-теги — в `index.html`.
-- Фото — в `public/img`. Пропорції треба зберегти:
-  - `hero.webp` — 4:5. До нього `hero-blur.webp`: ~300px завширшки, з горизонтальним motion-blur, щоб hero плавно переходив із розмитого фото в чітке.
-  - `work-*` — 1:1, 3:2, 7:3, 3:4, 4:5.
-  - `svc-*` — 4:5.
-  - `contact.webp` — 4:5.
-- Для обробки фото є скрипт `scripts/placeholders.py`. Він показує, як згенерувати blur-шар.
+- Імʼя, місто, контакти (Instagram), ціни, послуги, кроки, FAQ і блок SEO лежать у `src/config.ts`. Тексти вставляються дослівно.
+- Мета-теги не правляться вручну: блок між `seo:start` і `seo:end` в `index.html` під час `npm run build` замінюється згенерованим з `src/config.ts` (`seo`).
+- Фото лежать у `public/img`, імена за схемою: `anastasia-p01…` (портрети), `anastasia-m01…`, `yaroslava-m01…`, `igor-m01…` (роботи), `services01…03` (послуги).
+- Фото додавайте з природними пропорціями файлу. У `works` у `config.ts` вказуйте реальні `w` і `h` в пікселях: слот береться з них, фото не обрізається. Для послуг це 853×1280.
+- Службові файли: `hero-blur.jpg` (готовий розмитий шар hero, перехід у чітке фото через opacity), `og.jpg` (1200×630, превʼю в соцмережах), `grain.png` (зерно).
+- `scripts/placeholders.py` генерував тимчасові заглушки на старті проєкту і для поточних фото не потрібен.
 
 ## SEO
 Усе генерується з блоку `seo` у `src/config.ts` під час `npm run build` (`src/seo.ts` → `scripts/prerender.mjs`):
@@ -27,7 +29,7 @@ npm run build       # dist/ з пререндереним HTML (SSR → hydrate)
 - `dist/sitemap.xml` і `dist/robots.txt` з посиланням на sitemap.
 
 Домен задається змінною середовища, а не в коді (див. нижче).
-Сторінка пререндерена в HTML, тож пошуковики бачать текст без JS; у кожної секції один `h2`, у сторінки один `h1`.
+Сторінка пререндерена в HTML, тож пошуковики бачать текст без JS; у кожної секції один `h2`, у сторінки один `h1`. Телефону в даних і розмітці немає. Після `npm run build` запускайте `scripts/check-seo.mjs`: він звіряє JSON-LD із конфігом і шукає плейсхолдери.
 
 ## Налаштування домену
 Домен — одна змінна: **`VITE_SITE_URL`** (повна адреса без слеша в кінці, наприклад `https://korolyk.example`). Вона читається під час збірки (`scripts/prerender.mjs`) і будує canonical, hreflang, `og:url`, sitemap, robots та JSON-LD.
@@ -41,7 +43,7 @@ npm run build       # dist/ з пререндереним HTML (SSR → hydrate)
 4. Перевірити `https://ваш-домен/robots.txt` (має бути `Allow: /` і `Sitemap:`) та `view-source` (`index, follow`, canonical на ваш домен), потім додати сайт у Google Search Console й подати `sitemap.xml`.
 
 ## Рішення
-Принципи стилю описані в `STYLE-LOCK.md`. Нижче технічні рішення, які варто знати.
-- **Стек секцій на нативному `position: sticky`.** Скрол веде компоузитор браузера, тому картки не відстають від пальця. JS лише міряє висоту карток на resize (`--stack-top = min(0, vh − h)`) і затемнює нижню картку. Паралакс фото й дрейф hero — CSS scroll-driven animations; браузери без `animation-timeline` показують нерухоме фото.
+Принципи стилю описані в `STYLE-LOCK.md`, правила роботи з проєктом (захищені зони, перевірки) в `AGENTS.md`. Нижче технічні рішення, які варто знати.
+- **Стек секцій на нативному `position: sticky`.** Скрол веде компоузитор браузера, тому картки не відстають від пальця. `useStack.ts` через ResizeObserver міряє висоту карток у `--stack-h` (CSS: `top = min(0px, calc(100svh - var(--stack-h)))`) і затемнює нижню картку. Паралакс фото й дрейф hero — CSS scroll-driven animations; браузери без `animation-timeline` показують нерухоме фото. Фото в «Послугах» без паралакса, щоб не обрізались (`parallax={false}`).
 - **Hero.** Розмитий шар заздалегідь підготовлений і переходить у чітке фото через opacity. Живого `filter: blur` немає.
 - **FAQ.** Акордеон розкривається анімацією висоти: це прямо було в брифі. Це єдиний виняток із правила «тільки transform/opacity».
